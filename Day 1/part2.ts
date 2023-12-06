@@ -16,4 +16,4 @@ const finalValue = formattedInput.reduce((acc, curr) => {
   return acc;
 }, 0);
 
-console.log(finalValue);
+console.log(finalValue); //?
