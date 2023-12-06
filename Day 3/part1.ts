@@ -12,20 +12,20 @@ const getFullNumberAtPosition = (rowIndex: number, index: number): number => {
 
   // go backwards
   let i = index - 1;
-  while(row[i]?.match(/[0-9]/) && i >= 0) {
+  while (row[i]?.match(/[0-9]/) && i >= 0) {
     fullNumber = [row[i], ...fullNumber];
     i--;
   }
 
   // go forwards
   let k = index + 1;
-  while(row[k]?.match(/[0-9]/) && i <= row.length) {
+  while (row[k]?.match(/[0-9]/) && i <= row.length) {
     fullNumber = [...fullNumber, row[k]];
     k++;
   }
 
   return Number(fullNumber.join(''));
-}
+};
 
 const getValidNumbersInRow = (rowIndex: number): number[] => {
   const row: string[] = formattedInput[rowIndex];
@@ -35,21 +35,32 @@ const getValidNumbersInRow = (rowIndex: number): number[] => {
 
   const validPartNumbers = row.reduce((acc: number[], value, index) => {
     // if a number
-    if(value.match(/[0-9]/)) {
-      if(!foundNearSymbol) {
+    if (value.match(/[0-9]/)) {
+      if (!foundNearSymbol) {
         //check if next to a symbol in same row
-        if(row[index - 1]?.match(symbolRegex) || row[index + 1]?.match(symbolRegex)) {
+        if (
+          row[index - 1]?.match(symbolRegex) ||
+          row[index + 1]?.match(symbolRegex)
+        ) {
           // get full number from row
           acc.push(getFullNumberAtPosition(rowIndex, index));
           foundNearSymbol = true;
         }
         // check if next to a symbol on previous row
-        else if (formattedInput?.[rowIndex - 1]?.[index]?.match(symbolRegex) || formattedInput?.[rowIndex - 1]?.[index - 1]?.match(symbolRegex) || formattedInput?.[rowIndex - 1]?.[index + 1]?.match(symbolRegex)) {
+        else if (
+          formattedInput?.[rowIndex - 1]?.[index]?.match(symbolRegex) ||
+          formattedInput?.[rowIndex - 1]?.[index - 1]?.match(symbolRegex) ||
+          formattedInput?.[rowIndex - 1]?.[index + 1]?.match(symbolRegex)
+        ) {
           acc.push(getFullNumberAtPosition(rowIndex, index));
           foundNearSymbol = true;
         }
         // check if next to a symbol on next row
-        else if (formattedInput?.[rowIndex + 1]?.[index]?.match(symbolRegex) || formattedInput?.[rowIndex + 1]?.[index - 1]?.match(symbolRegex) || formattedInput?.[rowIndex + 1]?.[index + 1]?.match(symbolRegex)) {
+        else if (
+          formattedInput?.[rowIndex + 1]?.[index]?.match(symbolRegex) ||
+          formattedInput?.[rowIndex + 1]?.[index - 1]?.match(symbolRegex) ||
+          formattedInput?.[rowIndex + 1]?.[index + 1]?.match(symbolRegex)
+        ) {
           acc.push(getFullNumberAtPosition(rowIndex, index));
           foundNearSymbol = true;
         }
@@ -60,10 +71,12 @@ const getValidNumbersInRow = (rowIndex: number): number[] => {
     return acc;
   }, []);
   return validPartNumbers;
-}
+};
 
 const finalSum = formattedInput.reduce((acc, row, rowIndex) => {
-  const rowTotal = getValidNumbersInRow(rowIndex).reduce((acc, num) => acc + num);
+  const rowTotal = getValidNumbersInRow(rowIndex).reduce(
+    (acc, num) => acc + num
+  );
   return acc + rowTotal;
 }, 0);
 
